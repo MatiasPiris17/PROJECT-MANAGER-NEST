@@ -1,5 +1,5 @@
 import { BaseEntity } from "../../config/base.entity";
-import { ACCESS_LEVEL } from "../../constants/roles";
+import { ACCESS_LEVEL } from "../../constants";
 import { ProjectsEntity } from "../../projects/entities/projects.entity";
 import { Column, Entity, ManyToOne } from "typeorm";
 import { UsersEntity } from "./users.entity";

@@ -1,5 +1,5 @@
 import { BaseEntity } from "../../config/base.entity";
-import { ROLES } from "../../constants/roles";
+import { ROLES } from "../../constants";
 import { IUser } from "../../interfaces/user.interfaces";
 import { Column, Entity, OneToMany } from "typeorm";
 import { UsersProjectsEntity } from "./usersProjects.entity";
