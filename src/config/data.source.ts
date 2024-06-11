@@ -4,15 +4,14 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { DataSource, DataSourceOptions } from "typeorm";
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
-ConfigModule.forRoot({ // TODO: Revisar problema con el ambiente de desarrollo
-    envFilePath: `.env`,
+ConfigModule.forRoot({
+    envFilePath: `.${process.env.NODE_ENV}.env`
 })
 
 /**
  * "m:gen": "set NODE_ENV=development && npm run orm:init migration:generate",
  * "m:run": "set NODE_ENV=development && npm run orm:init migration:run"
- * comando para correr migrations: npm run m:gen -- ./migrations/init
- */
+*/
 
 const configService = new ConfigService()
 
