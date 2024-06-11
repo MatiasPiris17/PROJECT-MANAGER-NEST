@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import * as morgan from 'morgan';
 import { CORS } from './constants';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -12,6 +13,15 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   console.log("Escuchando en el puerto: " + configService.get('PORT'))
   console.log("Entorno: " + process.env.NODE_ENV)
+
+  /*AGREGAMOS UN PIPE PARA VALIDAR Y TRANSFORMAR LOS DATOS ANTES QUE LLEGUEN AL CONTROLADOR*/
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transformOptions: {
+        enableImplicitConversion: true
+      }
+    })
+  )
 
   app.enableCors(CORS)
 
