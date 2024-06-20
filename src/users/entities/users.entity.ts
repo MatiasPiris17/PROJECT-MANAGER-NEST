@@ -8,7 +8,7 @@ import { UsersProjectsEntity } from "./usersProjects.entity";
 export class UsersEntity extends BaseEntity implements IUser {
 
     @Column()
-    firsName: string;
+    firstName: string;
 
     @Column()
     lastName: string;

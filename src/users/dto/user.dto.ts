@@ -6,7 +6,7 @@ export class UserDTO {
     
     @IsNotEmpty()
     @IsString()
-    firsName: string;
+    firstName: string;
 
     @IsNotEmpty()
     @IsString()
@@ -37,7 +37,7 @@ export class UserUpdateDTO {
     
     @IsOptional()
     @IsString()
-    firsName: string;
+    firstName: string;
 
     @IsOptional()
     @IsString()
