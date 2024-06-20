@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { UsersEntity } from '../entities/users.entity';
 import { UserDTO, UserUpdateDTO } from '../dto/user.dto';
+import { ErrorManager } from 'src/utils/error.manager';
 
 @Injectable()
 export class UsersService {
@@ -26,20 +27,34 @@ export class UsersService {
 
   public async findUsers() {
     try {
-      return await this.userRepository.find();
-    } catch (error) {
-      throw new Error(error);
+      const users: UsersEntity[] = await this.userRepository.find();
+      if (users.length === 0) {
+        throw new ErrorManager({
+          type: 'BAD_REQUEST',
+          message: 'No se encontaron resultados',
+        })
+      }
+      return users
+    } catch (err) {
+      throw ErrorManager.createSignatureError(err.message);
     }
   }
 
   public async findUserById(id: string) {
     try {
-      return await this.userRepository
+      const user: UsersEntity = await this.userRepository
         .createQueryBuilder('user')
         .where({ id })
         .getOne()
-    } catch (error) {
-      throw new Error(error);
+      if (!user) {
+        throw new ErrorManager({
+          type: 'BAD_REQUEST',
+          message: 'No se encontaron resultados',
+        })
+      }
+      return user
+    } catch (err) {
+      throw ErrorManager.createSignatureError(err.message);
     }
   }
 
@@ -47,11 +62,14 @@ export class UsersService {
     try {
       const user: UpdateResult = await this.userRepository.update(id, body);
       if (user.affected === 0) {
-        return undefined
+        throw new ErrorManager({
+          type: 'BAD_REQUEST',
+          message: 'No se pudo actualizar',
+        })
       }
       return user
-    } catch (error) {
-      throw new Error(error);
+    } catch (err) {
+      throw ErrorManager.createSignatureError(err.message);
     }
   }
 
@@ -59,11 +77,14 @@ export class UsersService {
     try {
       const user: DeleteResult = await this.userRepository.delete(id);
       if (user.affected === 0) {
-        return undefined
+        throw new ErrorManager({
+          type: 'BAD_REQUEST',
+          message: 'No se pudo eliminar',
+        })
       }
       return user
-    } catch (error) {
-      throw new Error(error);
+    } catch (err) {
+      throw ErrorManager.createSignatureError(err.message);
     }
   }
 }
