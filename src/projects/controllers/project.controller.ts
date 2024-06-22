@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put } from '@nestjs/common';
 import { ProjectsService } from '../services/projects.service';
 import { ProjectsEntity } from '../entities/projects.entity';
 
@@ -18,17 +18,17 @@ export class ProjectsController {
   }
 
   @Get(':id')
-  public async findProjectById(@Param('id') id: string) {
+  public async findProjectById(@Param('id', new ParseUUIDPipe()) id: string) {
     return await this.projectService.findProjectById(id);
   }
 
   @Put('edit/:id')
-  public async updateProject(@Body() body: ProjectsEntity, @Param('id') id: string) {
+  public async updateProject(@Body() body: ProjectsEntity, @Param('id', new ParseUUIDPipe()) id: string) {
     return await this.projectService.updateProject(body, id);
   }
 
   @Delete('delete/:id')
-  public async deleteProject(@Param('id') id: string) {
+  public async deleteProject(@Param('id', new ParseUUIDPipe()) id: string) {
     return await this.projectService.deleteProject(id);
   }
 
