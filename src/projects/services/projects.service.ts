@@ -17,7 +17,7 @@ export class ProjectsService {
     try {
       return await this.projectRepository.save(body);
     } catch (err) {
-      throw new Error(err);
+      throw ErrorManager.createSignatureError(err.message);
     }
   }
 
