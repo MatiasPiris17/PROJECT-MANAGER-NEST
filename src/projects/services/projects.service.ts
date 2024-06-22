@@ -13,10 +13,6 @@ export class ProjectsService {
     private readonly projectRepository: Repository<ProjectsEntity>
   ) { }
 
-  getHello(): object {
-    return { "message": 'Hello World! Projects module' };
-  }
-
   public async createProject(body: ProjectsEntity) {
     try {
       return await this.projectRepository.save(body);
@@ -46,6 +42,8 @@ export class ProjectsService {
       const project: ProjectsEntity = await this.projectRepository
         .createQueryBuilder('project')
         .where({ id })
+        .leftJoinAndSelect('project.usersIncludes', 'usersIncludes')
+        .leftJoinAndSelect('usersIncludes.user', 'user')
         .getOne()
 
       if (!project) {
