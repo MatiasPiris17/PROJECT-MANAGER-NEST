@@ -3,6 +3,7 @@ import { ROLES } from "../../constants";
 import { IUser } from "../../interfaces/user.interfaces";
 import { Column, Entity, OneToMany } from "typeorm";
 import { UsersProjectsEntity } from "./usersProjects.entity";
+import { Exclude } from "class-transformer";
 
 @Entity({ name: 'users' })
 export class UsersEntity extends BaseEntity implements IUser {
@@ -23,6 +24,7 @@ export class UsersEntity extends BaseEntity implements IUser {
     username: string;
 
     @Column()
+    @Exclude()
     password: string;
 
     @Column({type: 'enum', enum: ROLES, default: ROLES.BASIC})
