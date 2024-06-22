@@ -1,6 +1,6 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
-import { UserDTO, UserUpdateDTO } from '../dto/user.dto';
+import { UserDTO, UserToProjectDTO, UserUpdateDTO } from '../dto/user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -18,17 +18,22 @@ export class UsersController {
     }
 
     @Get(':id')
-    public async findUserById(@Param('id') id:string){
+    public async findUserById(@Param('id', new ParseUUIDPipe()) id:string){
       return await this.userService.findUserById(id);
     }
      
     @Put('edit/:id')
-    public async updateUser(@Param('id') id:string, @Body() body:UserUpdateDTO){
+    public async updateUser(@Param('id', new ParseUUIDPipe()) id:string, @Body() body:UserUpdateDTO){
       return await this.userService.updateUser(body, id);
     }
 
     @Delete('delete/:id')
-    public async deleteUser(@Param('id') id:string){
+    public async deleteUser(@Param('id', new ParseUUIDPipe()) id:string){
       return await this.userService.deleteUser(id);
+    }
+
+    @Post('add-to-project')
+    public async addToProject(@Body() body: UserToProjectDTO){
+      return await this.userService.relationToProject(body);
     }
 }
